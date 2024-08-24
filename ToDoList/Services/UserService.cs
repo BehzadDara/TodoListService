@@ -45,7 +45,7 @@ public class UserService(
             return false;
         }
 
-        user.HashedPassword = MethodHelper.ComputeSHA512Hash(input.CurrentPassword);
+        user.HashedPassword = MethodHelper.ComputeSHA512Hash(input.NewPassword);
         await context.SaveChangesAsync();
 
         return true;

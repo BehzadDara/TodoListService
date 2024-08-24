@@ -19,14 +19,14 @@ public class TokenService
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Constants.TOKEN_KEY));
-        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512);
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         var now = DateTime.Now;
 
         var tokenDescriptor = new JwtSecurityToken(
-            null,
-            null,
+            "test-issuer",
+            "test-audience",
             claims,
-            null,
+            now,
             now.AddMinutes(Constants.TOKEN_EXPIRATION_IN_MINUTES),
             credentials);
 

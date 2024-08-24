@@ -24,6 +24,7 @@ public class User
     {
         return new User
         {
+            Id = 1,
             Username = "BehzadDara",
             HashedPassword = MethodHelper.ComputeSHA512Hash(Constants.PASSWORD_DEFAULT),
             Role = Constants.ROLE_ADMIN
