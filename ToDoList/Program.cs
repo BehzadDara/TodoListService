@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using TodoList;
 using TodoList.Services;
+using ToDoList.Services.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,7 +73,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton(typeof(CurrentUser));
 
 builder.Services.AddScoped(typeof(TokenService));
-builder.Services.AddScoped(typeof(UserService));
+//builder.Services.AddScoped(typeof(UserService));
+builder.Services.AddScoped<IUserService,UserService>();
 builder.Services.AddScoped(typeof(TodoService));
 
 var app = builder.Build();
