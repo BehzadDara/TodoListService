@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TodoList.DTOs;
 using TodoList.Models;
+using ToDoList.Services.Contracts;
 
 namespace TodoList.Services;
 
 public class UserService(
     TodoListDBContext context, 
     TokenService tokenService,
-    CurrentUser currentUser)
+    CurrentUser currentUser): IUserService
 {
     public async Task<string?> Login(LoginDTO input)
     {

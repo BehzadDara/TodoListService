@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TodoList.DTOs;
 using TodoList.Services;
+using ToDoList.Services.Contracts;
 
 namespace TodoList;
 
@@ -12,28 +13,28 @@ public static class Endpoint
         var group = routes.MapGroup("/User");
 
         group.MapPost("/Login",
-        async ([FromBody] LoginDTO input, UserService service) =>
+        async ([FromBody] LoginDTO input, IUserService service) =>
         {
             var token = await service.Login(input);
             return token is null? Results.NotFound() : Results.Ok(token);
         });
 
         group.MapPost("/Refresh",
-        async (UserService service) =>
+        async (IUserService service) =>
         {
             var token = await service.Refresh();
             return Results.Ok(token);
         });
 
         group.MapPost("/ChangePassword", [Authorize]
-        async ([FromBody] ChangePasswordDTO input, UserService service) =>
+        async ([FromBody] ChangePasswordDTO input, IUserService service) =>
         {
             var result = await service.ChangePassword(input);
             return result? Results.NoContent() : Results.BadRequest();
         });
 
         group.MapPost("/Create", [Authorize(Roles = Constants.ROLE_ADMIN)]
-        async ([FromBody] CreateUserDTO input, UserService service) =>
+        async ([FromBody] CreateUserDTO input, IUserService service) =>
         {
             var user = await service.Create(input);
             return user is null? Results.Conflict() : Results.Ok(user);
