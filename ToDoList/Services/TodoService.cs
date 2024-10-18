@@ -73,7 +73,6 @@ public class TodoService(
         todo.Id = input.Id;
         todo.Title = input.Title;
         todo.IsDone = input.IsDone;
-
         await context.SaveChangesAsync();
         return todo;
     }
