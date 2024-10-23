@@ -1,4 +1,4 @@
-﻿namespace TodoList.DTOs;
+﻿namespace TodoList.DTOs.Todo;
 
 public class CreateTodoDTO
 {

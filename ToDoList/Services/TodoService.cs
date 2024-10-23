@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TodoList.DTOs;
+using TodoList.DTOs.Todo;
 using TodoList.Models;
+using TodoList.Services.Contracts;
 
 namespace TodoList.Services;
 
 public class TodoService(
     TodoListDBContext context,
-    CurrentUser currentUser)
+    CurrentUser currentUser) : ITodoService
 {
     public async Task<Todo?> Create(CreateTodoDTO input)
     {
@@ -56,5 +57,38 @@ public class TodoService(
             .ToListAsync();
 
         return todos;
+    }
+
+    public async Task<Todo> Update(UpdateTodoDTO input)
+    {
+        var todo = await context.Todos.FirstOrDefaultAsync(x =>
+            x.Id == input.Id);
+
+        if (todo is null)
+        {
+            return null;
+        }
+
+        todo.Description = input.Description;
+        todo.Id = input.Id;
+        todo.Title = input.Title;
+        todo.IsDone = input.IsDone;
+        await context.SaveChangesAsync();
+        return todo;
+    }
+
+    public async Task<bool> Delete(int id)
+    {
+        var todo = await context.Todos.FirstOrDefaultAsync(x =>
+            x.Id == id);
+
+        if (todo is null)
+        {
+            return false;
+        }
+
+        context.Todos.Remove(todo);
+        await context.SaveChangesAsync();
+        return true;
     }
 }
